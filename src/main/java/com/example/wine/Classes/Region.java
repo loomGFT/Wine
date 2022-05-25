@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Region extends Wine {
+public class Region{
     @Id
     @GeneratedValue
     private Long id;
@@ -19,9 +19,9 @@ public class Region extends Wine {
         this.country = country;
     }
 
-    public Region(String name, String year, float rating, int num_reviews, int price, int body, int acidity, String regionName, String country) {
-        super(name, year, rating, num_reviews, price, body, acidity);
-        this.name = regionName;
+    public Region(Long id, String name, String country) {
+        this.id = id;
+        this.name = name;
         this.country = country;
     }
 
@@ -29,22 +29,18 @@ public class Region extends Wine {
 
     }
 
-    @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
