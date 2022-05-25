@@ -1,8 +1,10 @@
 package com.example.wine;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.example.wine.Classes.Region;
+import com.example.wine.Classes.Type;
+import com.example.wine.Classes.Winery;
+
+import javax.persistence.*;
 
 
 @Entity
@@ -19,12 +21,17 @@ public class Wine {
     private int price;
     private int body;
     private int acidity;
+    @ManyToOne
+    private Region region;
+    @ManyToOne
+    private Type type;
+    @ManyToOne
+    private Winery winery;
 
     public Wine() {
     }
 
-    public Wine(Long id, String name, String year, float rating, int num_reviews, int price, int body, int acidity) {
-        this.id = id;
+    public Wine(String name, String year, float rating, int num_reviews, int price, int body, int acidity, Region region, Type type, Winery winery) {
         this.name = name;
         this.year = year;
         this.rating = rating;
@@ -32,6 +39,9 @@ public class Wine {
         this.price = price;
         this.body = body;
         this.acidity = acidity;
+        this.region = region;
+        this.type = type;
+        this.winery = winery;
     }
 
     public Long getId() {
@@ -98,9 +108,33 @@ public class Wine {
         this.acidity = acidity;
     }
 
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Winery getWinery() {
+        return winery;
+    }
+
+    public void setWinery(Winery winery) {
+        this.winery = winery;
+    }
+
     @Override
     public String toString() {
-        return "Wineshop{" +
+        return "Wine{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", year='" + year + '\'' +
@@ -109,6 +143,9 @@ public class Wine {
                 ", price=" + price +
                 ", body=" + body +
                 ", acidity=" + acidity +
+                ", region=" + region +
+                ", type=" + type +
+                ", winery=" + winery +
                 '}';
     }
 }
