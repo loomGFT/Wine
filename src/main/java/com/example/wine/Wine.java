@@ -23,8 +23,7 @@ public class Wine {
     public Wine() {
     }
 
-    public Wine(Long id, String name, String year, float rating, int num_reviews, int price, int body, int acidity) {
-        this.id = id;
+    public Wine(String name, String year, float rating, int num_reviews, int price, int body, int acidity) {
         this.name = name;
         this.year = year;
         this.rating = rating;
