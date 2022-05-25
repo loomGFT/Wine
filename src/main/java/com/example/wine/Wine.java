@@ -21,11 +21,17 @@ public class Wine {
     private int price;
     private int body;
     private int acidity;
+
     @ManyToOne
+    @JoinColumn(name = "REGION")
     private Region region;
+
     @ManyToOne
+    @JoinColumn(name = "TYPE")
     private Type type;
+
     @ManyToOne
+    @JoinColumn(name = "WINERY")
     private Winery winery;
 
     public Wine() {
@@ -108,6 +114,7 @@ public class Wine {
         this.acidity = acidity;
     }
 
+
     public Region getRegion() {
         return region;
     }
@@ -116,6 +123,7 @@ public class Wine {
         this.region = region;
     }
 
+
     public Type getType() {
         return type;
     }
@@ -123,6 +131,7 @@ public class Wine {
     public void setType(Type type) {
         this.type = type;
     }
+
 
     public Winery getWinery() {
         return winery;
