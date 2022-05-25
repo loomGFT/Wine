@@ -15,7 +15,7 @@ public class Wine {
     private Long id;
 
     private String name;
-    private String year;
+    private String wineYear;
     private float rating;
     private int num_reviews;
     private int price;
@@ -33,7 +33,7 @@ public class Wine {
 
     public Wine(String name, String year, float rating, int num_reviews, int price, int body, int acidity, Region region, Type type, Winery winery) {
         this.name = name;
-        this.year = year;
+        this.wineYear = year;
         this.rating = rating;
         this.num_reviews = num_reviews;
         this.price = price;
@@ -61,11 +61,11 @@ public class Wine {
     }
 
     public String getYear() {
-        return year;
+        return wineYear;
     }
 
     public void setYear(String year) {
-        this.year = year;
+        this.wineYear = year;
     }
 
     public float getRating() {
@@ -137,7 +137,7 @@ public class Wine {
         return "Wine{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", year='" + year + '\'' +
+                ", year='" + wineYear + '\'' +
                 ", rating=" + rating +
                 ", num_reviews=" + num_reviews +
                 ", price=" + price +
