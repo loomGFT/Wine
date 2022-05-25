@@ -1,43 +1,62 @@
 package com.example.wine.Classes;
 
 import com.example.wine.Wine;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class Winery {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long   id;
     private String name;
+
+    @OneToMany(mappedBy = "winery")
+    private Set<Wine> wines;
 
     public Winery(String name) {
         this.name = name;
     }
 
-    public Winery() {
-
+    public void addWine(Wine w) {
+        if (wines == null) {
+            wines = new HashSet<>();
+        }
+        wines.add(w);
+        w.setWinery(this);
     }
 
-
-    public Long getId() {
-        return id;
+    public void removeWine(Wine w) {
+        wines.remove(w);
+        w.setWinery(null);
     }
 
-
-    public void setId(Long id) {
-        this.id = id;
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Winery)) return false;
+        Winery winery = (Winery) o;
+        return Objects.equals(getId(), winery.getId()) &&
+               getName().equals(winery.getName()) &&
+               Objects.equals(getWines(), winery.getWines());
     }
 
-
-    public String getName() {
-        return name;
+    @Override public int hashCode() {
+        return Objects.hash(getId(), getName(), getWines());
     }
 
-
-    public void setName(String name) {
-        this.name = name;
+    @Override public String toString() {
+        return "Winery{" +
+               "id=" + id +
+               ", name='" + name + '\'' +
+               '}';
     }
 }

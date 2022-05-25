@@ -1,64 +1,63 @@
 package com.example.wine.Classes;
 
 import com.example.wine.Wine;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-public class Region{
+@NoArgsConstructor
+public class Region {
     @Id
-    @GeneratedValue
-    private Long id;
-    private String name;
-    private String country;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long      id;
+    private String    name;
+    private String    country;
+    @OneToMany(mappedBy = "region")
+    private Set<Wine> wines;
 
     public Region(String name, String country) {
-        this.name = name;
+        this.name    = name;
         this.country = country;
     }
 
-    public Region(Long id, String name, String country) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
+    public void addWine(Wine wine) {
+        if (wines == null) {
+            wines = new HashSet<>();
+        }
+        wines.add(wine);
+        wine.setRegion(this);
     }
 
-    public Region() {
-
+    public void removeWine(Wine wine) {
+        wines.remove(wine);
+        wine.setRegion(null);
     }
 
-    public Long getId() {
-        return id;
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Region)) return false;
+        Region region = (Region) o;
+        return Objects.equals(getId(), region.getId()) && getName().equals(region.getName()) && getCountry().equals(
+            region.getCountry()) && Objects.equals(getWines(), region.getWines());
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override public int hashCode() {
+        return Objects.hash(getId(), getName(), getCountry(), getWines());
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "Region{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", country='" + country + '\'' +
+               '}';
     }
 }

@@ -22,30 +22,58 @@ class LoadDatabase {
       WineRepository wineshopRepository) {
 
     return args -> {
-      regionRepository.save(new Region("Alicante", "Espana"));
-      regionRepository.save(new Region("Bierzo", "Espana"));
-      regionRepository.save(new Region("Cadiz", "Espana"));
+      Region alicante = new Region("Alicante", "Espana");
+      Region bierzo   = new Region("Bierzo", "Espana");
+      Region cadiz    = new Region("Cadiz", "Espana");
 
-      regionRepository.findAll().forEach(r -> log.info("Preloaded " + r));
+      Type red    = new Type("Red");
+      Type mencia = new Type("Mencia");
+      Type syrah  = new Type("Syrah");
 
-      typeRepository.save(new Type("Red"));
-      typeRepository.save(new Type("Mencia"));
-      typeRepository.save(new Type("Syrah"));
+      Winery losada          = new Winery("Losada");
+      Winery enrique_mendoza = new Winery("Enrique Mendoza");
+      Winery albala          = new Winery("Huerta de Albala");
+
+      Wine wine1 = new Wine("Santa Rosa", 2017, 42f, 420, 189, 4, 3);
+      alicante.addWine(wine1);
+      red.addWine(wine1);
+      albala.addWine(wine1);
+
+      Wine wine2 = new Wine("Altos de Losada", 2018, 42f, 415, 179, 4, 3);
+      bierzo.addWine(wine2);
+      mencia.addWine(wine2);
+      losada.addWine(wine2);
+
+
+      Wine wine3 = new Wine("Tintilla de Rota", 2016, 46f, 92, 47, 4, 3);
+      cadiz.addWine(wine3);
+      syrah.addWine(wine3);
+      enrique_mendoza.addWine(wine3);
+
+
+      regionRepository.save(alicante);
+      regionRepository.save(bierzo);
+      regionRepository.save(cadiz);
+
+      typeRepository.save(red);
+      typeRepository.save(mencia);
+      typeRepository.save(syrah);
+
+      wineryRepository.save(losada);
+      wineryRepository.save(enrique_mendoza);
+      wineryRepository.save(albala);
+
+      wineshopRepository.save(wine1);
+      wineshopRepository.save(wine2);
+      wineshopRepository.save(wine3);
+
+      regionRepository.findAll().forEach(r -> log.info("Preloaded: " + r));
 
       typeRepository.findAll().forEach(t -> log.info("Preloaded: " + t));
 
-      wineryRepository.save(new Winery("Losada"));
-      wineryRepository.save(new Winery("Enrique Mendoza"));
-      wineryRepository.save(new Winery("Huerta de Albala"));
-
       wineryRepository.findAll().forEach(winery -> log.info("Preloaded: " + winery));
 
-
-
-
-      wineshopRepository.save(new Wine());
-
-      wineshopRepository.findAll().forEach(wineshop -> log.info("Preloaded " + wineshop));
+      wineshopRepository.findAll().forEach(w -> log.info("Preloaded " + w));
     };
   }
 }
