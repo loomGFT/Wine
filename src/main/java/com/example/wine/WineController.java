@@ -24,13 +24,13 @@ public class WineController {
         this.assembler = assembler;
     }
 
-    @GetMapping("/api/wine/{id}")
-    EntityModel<Wine> wine(@PathVariable Long id) {
-
-        Wine wine = repository.findById(id)
-                .orElseThrow(() -> new WineNotFoundException(id));
-        return assembler.toModel(wine);
-    }
+//    @GetMapping("/api/wine/{id}")
+//    EntityModel<Wine> wine(@PathVariable Long id) {
+//
+//        Wine wine = repository.findById(id)
+//                .orElseThrow(() -> new WineNotFoundException(id));
+//        return assembler.toModel(wine);
+//    }
     @GetMapping("/api/wineshop/{id}")
     EntityModel<Wine> one(@PathVariable Long id) {
 
