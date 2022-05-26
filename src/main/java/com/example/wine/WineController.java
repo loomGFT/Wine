@@ -3,9 +3,9 @@ package com.example.wine;
 import com.example.wine.Exceptions.WineNotFoundException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,28 +23,69 @@ public class WineController {
         this.repository = repository;
         this.assembler = assembler;
     }
+    @PostMapping("/wine")
+    ResponseEntity<?> newWine(@RequestBody Wine newWine) {
 
-//    @GetMapping("/api/wine/{id}")
-//    EntityModel<Wine> wine(@PathVariable Long id) {
-//
-//        Wine wine = repository.findById(id)
-//                .orElseThrow(() -> new WineNotFoundException(id));
-//        return assembler.toModel(wine);
-//    }
-    @GetMapping("/api/wineshop/{id}")
+        EntityModel<Wine> entityModel = assembler.toModel(repository.save(newWine));
+
+        return ResponseEntity //
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+                .body(entityModel);
+    }
+
+    @GetMapping("/wine/{id}")
     EntityModel<Wine> one(@PathVariable Long id) {
 
-        Wine wineshop = repository.findById(id)
+        Wine wine = repository.findById(id) //
                 .orElseThrow(() -> new WineNotFoundException(id));
-        return assembler.toModel(wineshop);
+        return assembler.toModel(wine);
     }
-    @GetMapping("/api/wineshop")
+
+    @GetMapping("/wine")
     CollectionModel<EntityModel<Wine>> all() {
 
-        List<EntityModel<Wine>> wineshop = repository.findAll().stream() //
+        List<EntityModel<Wine>> wines = repository.findAll().stream() //
                 .map(assembler::toModel) //
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(wineshop, linkTo(methodOn(WineController.class).all()).withSelfRel());
+        return CollectionModel.of(wines, linkTo(methodOn(WineController.class).all()).withSelfRel());
+    }
+
+    @PutMapping("/wine/{id}")
+    ResponseEntity<?> replaceWine(@RequestBody Wine newWine, @PathVariable Long id) {
+
+        Wine updatedEmployee = repository.findById(id) //
+                .map(wine -> {
+                    wine.setName(newWine.getName());
+                    wine.setYear(newWine.getYear());
+                    wine.setRating(newWine.getRating());
+                    wine.setNum_reviews(newWine.getNum_reviews());
+                    wine.setPrice(newWine.getPrice());
+                    wine.setBody(newWine.getBody());
+                    wine.setAcidity(newWine.getAcidity());
+                    wine.setWinery(newWine.getWinery());
+                    wine.setRegion(newWine.getRegion());
+                    wine.setType(newWine.getType());
+
+                    return repository.save(wine);
+                }) //
+                .orElseGet(() -> {
+                    newWine.setId(id);
+                    return repository.save(newWine);
+                });
+
+        EntityModel<Wine> entityModel = assembler.toModel(updatedEmployee);
+
+        return ResponseEntity //
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+                .body(entityModel);
+    }
+
+    @DeleteMapping("/wine/{id}")
+    ResponseEntity<?> deleteWine(@PathVariable Long id) {
+
+        repository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

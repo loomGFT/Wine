@@ -5,7 +5,7 @@ import com.example.wine.Classes.Type;
 import com.example.wine.Classes.Winery;
 
 import javax.persistence.*;
-
+import java.util.Objects;
 
 @Entity
 public class Wine {
@@ -15,12 +15,13 @@ public class Wine {
     private Long id;
 
     private String name;
-    private String wineYear;
+    private int wineYear;
     private float rating;
     private int num_reviews;
     private int price;
     private int body;
     private int acidity;
+
     @ManyToOne
     private Region region;
     @ManyToOne
@@ -31,7 +32,7 @@ public class Wine {
     public Wine() {
     }
 
-    public Wine(String name, String year, float rating, int num_reviews, int price, int body, int acidity, Region region, Type type, Winery winery) {
+    public Wine(String name, int year, float rating, int num_reviews, int price, int body, int acidity, Region region, Type type, Winery winery) {
         this.name = name;
         this.wineYear = year;
         this.rating = rating;
@@ -60,11 +61,11 @@ public class Wine {
         this.name = name;
     }
 
-    public String getYear() {
+    public int getYear() {
         return wineYear;
     }
 
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.wineYear = year;
     }
 
@@ -130,6 +131,24 @@ public class Wine {
 
     public void setWinery(Winery winery) {
         this.winery = winery;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o)
+            return true;
+        if (!(o instanceof Wine))
+            return false;
+        Wine wine = (Wine) o;
+        return Objects.equals(this.getId(), wine.getId()) && Objects.equals(this.winery, wine.winery)
+                && Objects.equals(this.wineYear, wine.wineYear) && Objects.equals(this.region, wine.region)
+                && Objects.equals(this.price, wine.price) && Objects.equals(this.name, wine.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId(), this.winery, this.wineYear, this.region, this.price, this.name);
     }
 
     @Override

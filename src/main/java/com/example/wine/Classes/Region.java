@@ -5,9 +5,10 @@ import com.example.wine.Wine;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
-public class Region{
+public class Region {
     @Id
     @GeneratedValue
     private Long id;
@@ -54,11 +55,24 @@ public class Region{
     }
 
     @Override
+    public boolean equals(Object o) {
+
+        if (this == o)
+            return true;
+        if (!(o instanceof Region))
+            return false;
+        Region region = (Region) o;
+        return Objects.equals(this.getId(), region.getId()) && Objects.equals(this.name, region.name)
+                && Objects.equals(this.country, region.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId(), this.name, this.country);
+    }
+
+    @Override
     public String toString() {
-        return "Region{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return "Region{" + "id=" + this.getId() + ", Region='" + this.name + '\'' + ", country='" + this.country + '\'' + '}';
     }
 }

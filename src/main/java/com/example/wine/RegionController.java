@@ -4,8 +4,9 @@ import com.example.wine.Classes.Region;
 import com.example.wine.Exceptions.RegionNotFoundException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,21 +23,62 @@ public class RegionController {
         this.assembler = assembler;
     }
 
-    @GetMapping("/api/region/{id}")
-    EntityModel<Region> one(@PathVariable Long id) {
+    @PostMapping("/region")
+    ResponseEntity<?> newRegion(@RequestBody Region newRegion) {
 
-        Region region = repository.findById(id)
-                .orElseThrow(() -> new RegionNotFoundException(id));
-        return assembler.toModel(region);
+        EntityModel<Region> entityModel = assembler.toModel(repository.save(newRegion));
+
+        return ResponseEntity //
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+                .body(entityModel);
     }
-    @GetMapping("/api/region")
+
+    @GetMapping("/region")
     CollectionModel<EntityModel<Region>> all() {
 
-        List<EntityModel<Region>> region = repository.findAll().stream() //
+        List<EntityModel<Region>> type = repository.findAll().stream() //
                 .map(assembler::toModel) //
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(region, linkTo(methodOn(RegionController.class).all()).withSelfRel());
+        return CollectionModel.of(type, linkTo(methodOn(RegionController.class).all()).withSelfRel());
+    }
+
+    @GetMapping("/region/{id}")
+    EntityModel<Region> one(@PathVariable Long id) {
+
+        Region region = repository.findById(id) //
+                .orElseThrow(() -> new RegionNotFoundException(id));
+
+        return assembler.toModel(region);
+    }
+
+    @PutMapping("/region/{id}")
+    ResponseEntity<?> replaceRegion(@RequestBody Region newRegion, @PathVariable Long id) {
+
+        Region updatedRegion = repository.findById(id) //
+                .map(type -> {
+                    type.setName(newRegion.getName());
+
+                    return repository.save(type);
+                }) //
+                .orElseGet(() -> {
+                    newRegion.setId(id);
+                    return repository.save(newRegion);
+                });
+
+        EntityModel<Region> entityModel = assembler.toModel(updatedRegion);
+
+        return ResponseEntity //
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+                .body(entityModel);
+    }
+
+    @DeleteMapping("/region/{id}")
+    ResponseEntity<?> deleteRegion(@PathVariable Long id) {
+
+        repository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
 

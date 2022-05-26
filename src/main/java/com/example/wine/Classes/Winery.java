@@ -5,6 +5,7 @@ import com.example.wine.Wine;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class Winery {
@@ -43,10 +44,23 @@ public class Winery {
     }
 
     @Override
+    public boolean equals(Object o) {
+
+        if (this == o)
+            return true;
+        if (!(o instanceof Winery))
+            return false;
+        Winery winery = (Winery) o;
+        return Objects.equals(this.getId(), winery.getId()) && Objects.equals(this.name, winery.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId(), this.name);
+    }
+
+    @Override
     public String toString() {
-        return "Winery{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Winery{" + "id=" + this.getId() + ", name='" + this.name + '\'' + '}';
     }
 }
