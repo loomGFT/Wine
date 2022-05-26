@@ -26,55 +26,51 @@ class LoadDatabase {
 
     return args -> {
 
+      if (regionRepository.count() < 1) {
 
-      wineSpaRepository
-          .findAll()
-          .stream()
-          .map(WineSpa::getRegion)
-          .distinct()
-          .forEach(r -> regionRepository.save(new Region(r, "Espana")));
-
-
-      wineSpaRepository.findAll()
-                       .stream()
-                       .map(WineSpa::getType)
-                       .distinct()
-                       .forEach(t -> typeRepository.save(new Type(t)));
+        wineSpaRepository
+            .findAll()
+            .stream()
+            .map(WineSpa::getRegion)
+            .distinct()
+            .forEach(r -> regionRepository.save(new Region(r, "Espana")));
 
 
-      wineSpaRepository.findAll()
-                       .stream()
-                       .map(WineSpa::getWinery)
-                       .distinct()
-                       .forEach(w -> wineryRepository.save(new Winery(w)));
+        wineSpaRepository.findAll()
+                         .stream()
+                         .map(WineSpa::getType)
+                         .distinct()
+                         .forEach(t -> typeRepository.save(new Type(t)));
 
 
-      wineSpaRepository.findAll().forEach(wineSpa -> {
-        Wine wine = new Wine();
-        wine.setName(wineSpa.getWine());
-        wine.setBody(wineSpa.getBody());
-        wine.setAcidity(wineSpa.getAcidity());
-        wine.setRating(wineSpa.getRating());
-        wine.setNum_reviews(wineSpa.getNum_reviews());
-        wine.setYear(wineSpa.getYear());
-        wine.setPrice(wineSpa.getPrice());
-        Region r = regionRepository.findByName(wineSpa.getRegion());
-        wine.setRegion(r);
-        Type t = typeRepository.findByName(wineSpa.getType());
-        wine.setType(t);
-        Winery winery = wineryRepository.findByName(wineSpa.getWinery());
-        wine.setWinery(winery);
-        wineshopRepository.save(wine);
-      });
+        wineSpaRepository.findAll()
+                         .stream()
+                         .map(WineSpa::getWinery)
+                         .distinct()
+                         .forEach(w -> wineryRepository.save(new Winery(w)));
 
 
-//      regionRepository.findAll().forEach(r -> log.info("Preloaded: " + r));
-//
-//      typeRepository.findAll().forEach(t -> log.info("Preloaded: " + t));
-//
-//      wineryRepository.findAll().forEach(winery -> log.info("Preloaded: " + winery));
-//
-      log.info("Total Preloaded " + wineshopRepository.findAll().size());
+        wineSpaRepository.findAll().forEach(wineSpa -> {
+          Wine wine = new Wine();
+          wine.setName(wineSpa.getWine());
+          wine.setBody(wineSpa.getBody());
+          wine.setAcidity(wineSpa.getAcidity());
+          wine.setRating(wineSpa.getRating());
+          wine.setNum_reviews(wineSpa.getNum_reviews());
+          wine.setYear(wineSpa.getYear());
+          wine.setPrice(wineSpa.getPrice());
+          Region r = regionRepository.findByName(wineSpa.getRegion());
+          wine.setRegion(r);
+          Type t = typeRepository.findByName(wineSpa.getType());
+          wine.setType(t);
+          Winery winery = wineryRepository.findByName(wineSpa.getWinery());
+          wine.setWinery(winery);
+          wineshopRepository.save(wine);
+        });
+      }
+
+
+      log.info("Total Preloaded " + wineshopRepository.count());
     };
   }
 }
