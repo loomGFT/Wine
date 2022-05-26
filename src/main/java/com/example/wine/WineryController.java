@@ -4,9 +4,11 @@ import com.example.wine.Classes.Winery;
 import com.example.wine.Exceptions.WineryNotFoundException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class WineryController {
+
 
   private final WineryRepository     repository;
   private final WineryModelAssembler assembler;
@@ -42,4 +45,6 @@ public class WineryController {
 
     return CollectionModel.of(winery, linkTo(methodOn(WineryController.class).all()).withSelfRel());
   }
+
 }
+

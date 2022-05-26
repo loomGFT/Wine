@@ -6,10 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 
 @Getter
 @Setter
@@ -24,6 +26,7 @@ public class Region {
   @OneToMany(mappedBy = "region")
   @JsonIgnore
   private Set<Wine> wines;
+
 
   public Region(String name, String country) {
     this.name    = name;
@@ -62,4 +65,5 @@ public class Region {
            ", country='" + country + '\'' +
            '}';
   }
+
 }

@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 
 @Getter
 @Setter
@@ -33,6 +35,7 @@ public class Winery {
         }
         wines.add(w);
         w.setWinery(this);
+
     }
 
     public void removeWine(Wine w) {
@@ -58,5 +61,6 @@ public class Winery {
                "id=" + id +
                ", name='" + name + '\'' +
                '}';
+
     }
 }

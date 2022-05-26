@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class WineModelAssembler implements RepresentationModelAssembler<Wine, EntityModel<Wine>> {
     @Override
-    public EntityModel<Wine> toModel(Wine wineshop) {
+    public EntityModel<Wine> toModel(Wine wine) {
 
-        return EntityModel.of(wineshop,
-                linkTo(methodOn(WineController.class).one(wineshop.getId())).withSelfRel(),
-                linkTo(methodOn(WineController.class).all()).withRel("wineshop"));
+        return EntityModel.of(wine, //
+                linkTo(methodOn(WineController.class).one(wine.getId())).withSelfRel(),
+                linkTo(methodOn(WineController.class).all()).withRel("Wines"));
     }
 }

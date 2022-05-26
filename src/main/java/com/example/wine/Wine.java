@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -69,4 +69,5 @@ public class Wine {
            ", winery=" + winery +
            '}';
   }
+
 }
