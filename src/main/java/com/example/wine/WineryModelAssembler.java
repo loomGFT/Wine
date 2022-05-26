@@ -7,12 +7,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WineryModelAssembler implements RepresentationModelAssembler<Winery, EntityModel<Winery>> {
+class WineryModelAssembler implements RepresentationModelAssembler<Winery, EntityModel<Winery>> {
+
     @Override
     public EntityModel<Winery> toModel(Winery winery) {
 
-        return EntityModel.of(winery,
+        return EntityModel.of(winery, //
                 linkTo(methodOn(WineryController.class).one(winery.getId())).withSelfRel(),
-                linkTo(methodOn(WineryController.class).all()).withRel("wine"));
+                linkTo(methodOn(WineryController.class).all()).withRel("Winery"));
     }
 }
