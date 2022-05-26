@@ -18,11 +18,6 @@ public class Winery {
         this.name = name;
     }
 
-    public Winery(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Winery() {
 
     }

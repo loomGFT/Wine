@@ -21,7 +21,6 @@ class WineryController {
     private final WineryModelAssembler assembler;
 
     WineryController(WineryRepository repository, WineryModelAssembler assembler) {
-
         this.repository = repository;
         this.assembler = assembler;
     }
@@ -46,7 +45,7 @@ class WineryController {
         return CollectionModel.of(type, linkTo(methodOn(WineryController.class).all()).withSelfRel());
     }
 
-    @GetMapping("/region/{id}")
+    @GetMapping("/winery/{id}")
     EntityModel<Winery> one(@PathVariable Long id) {
 
         Winery winery = repository.findById(id) //

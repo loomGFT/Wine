@@ -3,11 +3,13 @@ package com.example.wine;
 import com.example.wine.Classes.Region;
 import com.example.wine.Classes.Type;
 import com.example.wine.Classes.Winery;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Wine {
 
     @Id
@@ -23,10 +25,13 @@ public class Wine {
     private int acidity;
 
     @ManyToOne
+    @JoinColumn(name = "region")
     private Region region;
     @ManyToOne
+    @JoinColumn(name = "type")
     private Type type;
     @ManyToOne
+    @JoinColumn(name = "winery")
     private Winery winery;
 
     public Wine() {
