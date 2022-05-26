@@ -28,6 +28,6 @@ class RegionControllerTest {
                  .uri("/api/region")
                  .exchange()
                  .expectStatus().isOk()
-                 .expectBody().jsonPath("$.length()").isEqualTo(3);
+                 .expectBody().jsonPath("$.length()").isEqualTo(2);
   }
 }

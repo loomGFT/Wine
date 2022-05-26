@@ -3,6 +3,7 @@ package com.example.wine;
 import com.example.wine.Classes.Region;
 import com.example.wine.Classes.Type;
 import com.example.wine.Classes.Winery;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,14 +31,17 @@ public class Wine {
 
   @ManyToOne()
   @JoinColumn(name = "region_id")
+  @JsonIgnore
   private Region region;
 
   @ManyToOne()
   @JoinColumn(name = "type_id")
+  @JsonIgnore
   private Type type;
 
   @ManyToOne()
   @JoinColumn(name = "winery_id")
+  @JsonIgnore
   private Winery winery;
 
   public Wine(String name, int wineYear, float rating, int num_reviews, int price, int body, int acidity) {

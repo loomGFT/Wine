@@ -1,6 +1,7 @@
 package com.example.wine.Classes;
 
 import com.example.wine.Wine;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Region {
     private String    name;
     private String    country;
     @OneToMany(mappedBy = "region")
+    @JsonIgnore
     private Set<Wine> wines;
 
     public Region(String name, String country) {
