@@ -14,8 +14,8 @@ public class RegionModelAssembler implements RepresentationModelAssembler<Region
     public EntityModel<Region> toModel(Region region) {
 
         return EntityModel.of(region,
-                linkTo(methodOn(RegionController.class).one(region.getId())).withSelfRel(),
-                linkTo(methodOn(RegionController.class).all()).withRel("region"));
+                              linkTo(methodOn(RegionController.class).one(region.getId())).withSelfRel(),
+                              linkTo(methodOn(RegionController.class).all()).withRel("region"));
     }
 }
 

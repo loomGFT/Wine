@@ -14,8 +14,8 @@ public class TypeModelAssembler implements RepresentationModelAssembler<Type, En
     public EntityModel<Type> toModel(Type type) {
 
         return EntityModel.of(type,
-                linkTo(methodOn(TypeController.class).one(type.getId())).withSelfRel(),
-                linkTo(methodOn(TypeController.class).all()).withRel("type"));
+                              linkTo(methodOn(TypeController.class).one(type.getId())).withSelfRel(),
+                              linkTo(methodOn(TypeController.class).all()).withRel("type"));
     }
 }
 

@@ -4,9 +4,11 @@ import com.example.wine.Classes.Region;
 import com.example.wine.Exceptions.RegionNotFoundException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,30 +18,29 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class RegionController {
-    private final RegionRepository repository;
+    private final RegionRepository     repository;
     private final RegionModelAssembler assembler;
 
     public RegionController(RegionRepository repository, RegionModelAssembler assembler) {
         this.repository = repository;
-        this.assembler = assembler;
+        this.assembler  = assembler;
     }
 
     @PostMapping("/region")
     ResponseEntity<?> newRegion(@RequestBody Region newRegion) {
 
-        EntityModel<Region> entityModel = assembler.toModel(repository.save(newRegion));
-
-        return ResponseEntity //
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
-                .body(entityModel);
+        Region region = repository.findById(id)
+                                  .orElseThrow(() -> new RegionNotFoundException(id));
+        return assembler.toModel(region);
     }
 
-    @GetMapping("/region")
+    @GetMapping("/api/region")
     CollectionModel<EntityModel<Region>> all() {
 
-        List<EntityModel<Region>> type = repository.findAll().stream() //
-                .map(assembler::toModel) //
-                .collect(Collectors.toList());
+        List<EntityModel<Region>> region = repository.findAll().stream() //
+                                                     .map(assembler::toModel) //
+                                                     .collect(Collectors.toList());
+
 
         return CollectionModel.of(type, linkTo(methodOn(RegionController.class).all()).withSelfRel());
     }
